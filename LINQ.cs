@@ -3,313 +3,179 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-/// <summary>
-/// Модель категории товаров.
-/// </summary>
+// класс для хранения данных категории товаров
 public sealed class Category
 {
-    /// <summary>
-    /// Идентификатор категории.
-    /// </summary>
+    // идентификатор категории
     public int Id { get; set; }
-    /// <summary>
-    /// Название категории.
-    /// </summary>
+    // название категории
     public string Name { get; set; } = "";
 }
 
-/// <summary>
-/// Модель поставщика товаров.
-/// </summary>
+// класс для хранения данных поставщика товаров
 public sealed class Supplier
 {
-    /// <summary>
-    /// Идентификатор поставщика.
-    /// </summary>
+    // идентификатор поставщика
     public int Id { get; set; }
-    /// <summary>
-    /// Название поставщика.
-    /// </summary>
+    // название поставщика
     public string Name { get; set; } = "";
 }
 
-/// <summary>
-/// Модель товара с ценой, остатком и признаком активности.
-/// </summary>
+// класс для хранения данных товара с ценой, остатком и признаком активности
 public sealed class Product
 {
-    /// <summary>
-    /// Идентификатор товара.
-    /// </summary>
+    // идентификатор товара
     public int Id { get; set; }
-    /// <summary>
-    /// Название товара.
-    /// </summary>
+    // название товара
     public string Name { get; set; } = "";
-    /// <summary>
-    /// Идентификатор связанной категории.
-    /// </summary>
+    // идентификатор связанной категории
     public int CategoryId { get; set; }
-    /// <summary>
-    /// Необязательный идентификатор поставщика.
-    /// </summary>
+    // необязательный идентификатор поставщика
     public int? SupplierId { get; set; }
-    /// <summary>
-    /// Цена единицы товара.
-    /// </summary>
+    // цена единицы товара
     public decimal Price { get; set; }
-    /// <summary>
-    /// Количество единиц на складе.
-    /// </summary>
+    // количество единиц на складе
     public int StockQuantity { get; set; }
-    /// <summary>
-    /// Признак активности товара.
-    /// </summary>
+    // признак активности товара
     public bool IsActive { get; set; }
 }
 
-/// <summary>
-/// Модель заказа с датой создания и списком позиций.
-/// </summary>
+// класс для хранения данных заказа с датой создания и списком позиций
 public sealed class Order
 {
-    /// <summary>
-    /// Идентификатор заказа.
-    /// </summary>
+    // идентификатор заказа
     public int Id { get; set; }
-    /// <summary>
-    /// Дата создания заказа.
-    /// </summary>
+    // дата создания заказа
     public DateTime CreatedAt { get; set; }
-    /// <summary>
-    /// Список товарных позиций заказа.
-    /// </summary>
+    // список товарных позиций заказа
     public List<OrderItem> Items { get; set; } = new();
 }
 
-/// <summary>
-/// Модель позиции заказа с количеством и фактической ценой продажи.
-/// </summary>
+// класс для хранения данных позиции заказа с количеством и фактической ценой продажи
 public sealed class OrderItem
 {
-    /// <summary>
-    /// Идентификатор проданного товара.
-    /// </summary>
+    // идентификатор проданного товара
     public int ProductId { get; set; }
-    /// <summary>
-    /// Количество единиц товара в позиции.
-    /// </summary>
+    // количество единиц товара в позиции
     public int Quantity { get; set; }
-    /// <summary>
-    /// Цена единицы на момент заказа.
-    /// </summary>
+    // цена единицы на момент заказа
     public decimal UnitPrice { get; set; }
 }
 
-/// <summary>
-/// Строка каталога, дополненная названиями категории и поставщика, налогом и статусом остатка.
-/// </summary>
+// строка каталога, дополненная названиями категории и поставщика, налогом и статусом остатка
 public sealed class ProductCatalogItem
 {
-    /// <summary>
-    /// Идентификатор товара.
-    /// </summary>
+    // идентификатор товара
     public int Id { get; set; }
-    /// <summary>
-    /// Название товара.
-    /// </summary>
+    // название товара
     public string Name { get; set; } = "";
-    /// <summary>
-    /// Название категории или заменяющее значение.
-    /// </summary>
+    // название категории или заменяющее значение
     public string CategoryName { get; set; } = "";
-    /// <summary>
-    /// Название поставщика или заменяющее значение.
-    /// </summary>
+    // название поставщика или заменяющее значение
     public string SupplierName { get; set; } = "";
-    /// <summary>
-    /// Цена без добавленного налога.
-    /// </summary>
+    // цена без добавленного налога
     public decimal Price { get; set; }
-    /// <summary>
-    /// Цена с налогом 20%, округлённая до двух знаков.
-    /// </summary>
+    // цена с налогом 20%, округлённая до двух знаков
     public decimal PriceWithTax { get; set; }
-    /// <summary>
-    /// Остаток товара на складе.
-    /// </summary>
+    // остаток товара на складе
     public int StockQuantity { get; set; }
-    /// <summary>
-    /// Текстовый статус наличия.
-    /// </summary>
+    // текстовый статус наличия
     public string StockStatus { get; set; } = "";
 }
 
-/// <summary>
-/// Агрегированные показатели запасов по одной категории.
-/// </summary>
+// агрегированные показатели запасов по одной категории
 public sealed class CategoryStockReport
 {
-    /// <summary>
-    /// Название категории.
-    /// </summary>
+    // название категории
     public string CategoryName { get; set; } = "";
-    /// <summary>
-    /// Количество товарных позиций в категории.
-    /// </summary>
+    // количество товарных позиций в категории
     public int TotalProducts { get; set; }
-    /// <summary>
-    /// Количество активных товаров.
-    /// </summary>
+    // количество активных товаров
     public int ActiveProducts { get; set; }
-    /// <summary>
-    /// Количество товаров с положительным остатком.
-    /// </summary>
+    // количество товаров с положительным остатком
     public int InStockProducts { get; set; }
-    /// <summary>
-    /// Суммарное количество единиц на складе.
-    /// </summary>
+    // суммарное количество единиц на складе
     public int TotalStockQuantity { get; set; }
-    /// <summary>
-    /// Суммарная стоимость запасов по ценам товаров.
-    /// </summary>
+    // суммарная стоимость запасов по ценам товаров
     public decimal TotalStockValue { get; set; }
-    /// <summary>
-    /// Средняя цена или null для пустой категории.
-    /// </summary>
+    // средняя цена или null для пустой категории
     public decimal? AveragePrice { get; set; }
-    /// <summary>
-    /// Минимальная цена или null для пустой категории.
-    /// </summary>
+    // минимальная цена или null для пустой категории
     public decimal? MinPrice { get; set; }
-    /// <summary>
-    /// Максимальная цена или null для пустой категории.
-    /// </summary>
+    // максимальная цена или null для пустой категории
     public decimal? MaxPrice { get; set; }
 }
 
-/// <summary>
-/// Агрегированная статистика продаж отдельного товара.
-/// </summary>
+// агрегированная статистика продаж отдельного товара
 public sealed class ProductSalesReport
 {
-    /// <summary>
-    /// Идентификатор товара.
-    /// </summary>
+    // идентификатор товара
     public int ProductId { get; set; }
-    /// <summary>
-    /// Название товара.
-    /// </summary>
+    // название товара
     public string ProductName { get; set; } = "";
-    /// <summary>
-    /// Суммарное проданное количество.
-    /// </summary>
+    // суммарное проданное количество
     public int TotalQuantity { get; set; }
-    /// <summary>
-    /// Число различных заказов с этим товаром.
-    /// </summary>
+    // число различных заказов с этим товаром
     public int OrdersCount { get; set; }
-    /// <summary>
-    /// Суммарная выручка по товару.
-    /// </summary>
+    // суммарная выручка по товару
     public decimal Revenue { get; set; }
 }
 
-/// <summary>
-/// Сводный аналитический отчёт магазина.
-/// </summary>
+// сводный аналитический отчёт магазина
 public sealed class StoreAnalyticsReport
 {
-    /// <summary>
-    /// Строки выбранной страницы каталога.
-    /// </summary>
+    // строки выбранной страницы каталога
     public List<ProductCatalogItem> Catalog { get; set; } = new();
-    /// <summary>
-    /// Отчёты по всем категориям.
-    /// </summary>
+    // отчёты по всем категориям
     public List<CategoryStockReport> CategoryReports { get; set; } = new();
-    /// <summary>
-    /// До пяти лидеров продаж по выручке.
-    /// </summary>
+    // до пяти лидеров продаж по выручке
     public List<ProductSalesReport> TopSales { get; set; } = new();
 
-    /// <summary>
-    /// Общее количество товарных позиций.
-    /// </summary>
+    // общее количество товарных позиций
     public int TotalProducts { get; set; }
-    /// <summary>
-    /// Количество активных товаров.
-    /// </summary>
+    // количество активных товаров
     public int ActiveProducts { get; set; }
-    /// <summary>
-    /// Количество товаров с нулевым остатком.
-    /// </summary>
+    // количество товаров с нулевым остатком
     public int OutOfStockProducts { get; set; }
-    /// <summary>
-    /// Общая стоимость запасов.
-    /// </summary>
+    // общая стоимость запасов
     public decimal TotalStockValue { get; set; }
-    /// <summary>
-    /// Средняя цена активного товара или null.
-    /// </summary>
+    // средняя цена активного товара или null
     public decimal? AverageActiveProductPrice { get; set; }
 
-    /// <summary>
-    /// Признак наличия хотя бы одного товара с нулевым остатком.
-    /// </summary>
+    // признак наличия хотя бы одного товара с нулевым остатком
     public bool HasOutOfStockProducts { get; set; }
-    /// <summary>
-    /// Признак того, что все цены неотрицательны.
-    /// </summary>
+    // признак того, что все цены неотрицательны
     public bool AllPricesNonNegative { get; set; }
 
-    /// <summary>
-    /// Первый товар дороже 100000 рублей или null.
-    /// </summary>
+    // первый товар дороже 100000 рублей или null
     public Product? ExpensiveProduct { get; set; }
-    /// <summary>
-    /// Категория с идентификатором 1, найденная через Single.
-    /// </summary>
+    // категория с идентификатором 1, найденная через Single
     public Category? SelectedCategory { get; set; }
 }
 
-/// <summary>
-/// Контейнер исходных коллекций для построения отчёта.
-/// </summary>
+// контейнер исходных коллекций для построения отчёта
 public sealed class StoreData
 {
-    /// <summary>
-    /// Справочник категорий.
-    /// </summary>
+    // справочник категорий
     public List<Category> Categories { get; set; } = new();
-    /// <summary>
-    /// Справочник поставщиков.
-    /// </summary>
+    // справочник поставщиков
     public List<Supplier> Suppliers { get; set; } = new();
-    /// <summary>
-    /// Коллекция товаров.
-    /// </summary>
+    // коллекция товаров
     public List<Product> Products { get; set; } = new();
-    /// <summary>
-    /// Коллекция заказов.
-    /// </summary>
+    // коллекция заказов
     public List<Order> Orders { get; set; } = new();
 }
 
-/// <summary>
-/// Фабрика демонстрационного набора данных.
-/// </summary>
+// фабрика демонстрационного набора данных
 public static class TestDataFactory
 {
-    /// <summary>
-    /// Создаёт категории, поставщиков, товары и заказы для проверки LINQ-запросов.
-    /// </summary>
-    /// <returns>Заполненный объект StoreData.</returns>
+    // создаёт категории, поставщиков, товары и заказы для проверки LINQ-запросов
+    // возвращает: заполненный объект StoreData
     public static StoreData Create()
     {
         return new StoreData
         {
-            // Категория «Принтеры» не содержит товаров: проверка пустой группы.
+            // категория «Принтеры» не содержит товаров: проверка пустой группы
             Categories = new List<Category>
             {
                 new Category { Id = 1, Name = "Компьютеры" },
@@ -318,14 +184,14 @@ public static class TestDataFactory
                 new Category { Id = 4, Name = "Принтеры" }
             },
 
-            // Справочник поставщиков для последующего объединения.
+            // справочник поставщиков для последующего объединения
             Suppliers = new List<Supplier>
             {
                 new Supplier { Id = 1, Name = "TechStore" },
                 new Supplier { Id = 2, Name = "DigitalMarket" }
             },
 
-            // Набор включает активные и неактивные товары, нулевой остаток, отсутствующего поставщика и неизвестную категорию.
+            // набор включает активные и неактивные товары, нулевой остаток, отсутствующего поставщика и неизвестную категорию
             Products = new List<Product>
             {
                 new Product
@@ -410,7 +276,7 @@ public static class TestDataFactory
                 }
             },
 
-            // Заказы содержат в том числе повторяющиеся позиции одного товара для проверки подсчёта уникальных заказов.
+            // заказы содержат в том числе повторяющиеся позиции одного товара для проверки подсчёта уникальных заказов
             Orders = new List<Order>
             {
                 new Order
@@ -478,25 +344,21 @@ public static class TestDataFactory
     }
 }
 
-/// <summary>
-/// Сервис аналитики магазина: фильтрация, объединение, группировка и агрегация коллекций с помощью LINQ.
-/// </summary>
+// сервис аналитики магазина: фильтрация, объединение, группировка и агрегация коллекций с помощью LINQ
 public sealed class StoreAnalyticsService
 {
-    /// <summary>
-    /// Проверяет входные данные и формирует сводный отчёт, каталог, статистику запасов и продаж.
-    /// </summary>
-    /// <param name="products">Исходная последовательность товаров.</param>
-    /// <param name="categories">Справочник категорий.</param>
-    /// <param name="suppliers">Справочник поставщиков.</param>
-    /// <param name="orders">Последовательность заказов.</param>
-    /// <param name="minPrice">Необязательная нижняя граница цены включительно.</param>
-    /// <param name="maxPrice">Необязательная верхняя граница цены включительно.</param>
-    /// <param name="categoryId">Необязательный идентификатор категории.</param>
-    /// <param name="searchText">Необязательная подстрока для поиска по названию.</param>
-    /// <param name="pageNumber">Номер страницы каталога начиная с 1.</param>
-    /// <param name="pageSize">Максимальное количество элементов страницы.</param>
-    /// <returns>Сводный аналитический отчёт.</returns>
+    // проверяет входные данные и формирует сводный отчёт, каталог, статистику запасов и продаж
+    // products — исходная последовательность товаров
+    // categories — справочник категорий
+    // suppliers — справочник поставщиков
+    // orders — последовательность заказов
+    // minPrice — необязательная нижняя граница цены включительно
+    // maxPrice — необязательная верхняя граница цены включительно
+    // categoryId — необязательный идентификатор категории
+    // searchText — необязательная подстрока для поиска по названию
+    // pageNumber — номер страницы каталога начиная с 1
+    // pageSize — максимальное количество элементов страницы
+    // возвращает: сводный аналитический отчёт
     public StoreAnalyticsReport BuildReport(
         IEnumerable<Product> products,
         IEnumerable<Category> categories,
@@ -509,21 +371,21 @@ public sealed class StoreAnalyticsService
         int pageNumber = 1,
         int pageSize = 10)
     {
-        // Проверяем обязательные последовательности на null.
+        // проверяем обязательные последовательности на null
         ArgumentNullException.ThrowIfNull(products);
         ArgumentNullException.ThrowIfNull(categories);
         ArgumentNullException.ThrowIfNull(suppliers);
         ArgumentNullException.ThrowIfNull(orders);
 
-        // Номер страницы должен быть положительным.
+        // номер страницы должен быть положительным
         if (pageNumber <= 0)
             throw new ArgumentOutOfRangeException(nameof(pageNumber));
 
-        // Размер страницы должен быть положительным.
+        // размер страницы должен быть положительным
         if (pageSize <= 0)
             throw new ArgumentOutOfRangeException(nameof(pageSize));
 
-        // Проверяем согласованность границ цены, если заданы обе.
+        // проверяем согласованность границ цены, если заданы обе
         if (minPrice.HasValue && maxPrice.HasValue &&
             minPrice.Value > maxPrice.Value)
         {
@@ -533,70 +395,68 @@ public sealed class StoreAnalyticsService
 
         return new StoreAnalyticsReport
         {
-            // Фильтры и пагинация применяются к каталогу, но не к общим показателям отчёта.
+            // фильтры и пагинация применяются к каталогу, но не к общим показателям отчёта
             Catalog = BuildCatalog(
                 products, categories, suppliers,
                 minPrice, maxPrice, categoryId,
                 searchText, pageNumber, pageSize),
 
-            // Формируем статистику всех категорий.
+            // формируем статистику всех категорий
             CategoryReports = BuildCategoryReport(
                 products, categories),
 
-            // Строим рейтинг по фактическим продажам.
+            // строим рейтинг по фактическим продажам
             TopSales = BuildSalesReport(products, orders),
 
-            // Count без предиката считает все элементы.
+            // здесь Count без предиката считает все элементы
             TotalProducts = products.Count(),
 
-            // Count с предикатом считает только активные товары.
+            // здесь Count с предикатом считает только активные товары
             ActiveProducts = products.Count(
                 product => product.IsActive),
 
-            // Считаем товары с нулевым остатком.
+            // считаем товары с нулевым остатком
             OutOfStockProducts = products.Count(
                 product => product.StockQuantity == 0),
 
-            // Sum суммирует стоимость всех складских остатков.
+            // здесь Sum суммирует стоимость всех складских остатков
             TotalStockValue = products.Sum(
                 product => product.Price * product.StockQuantity),
 
-            // Where фильтрует активные товары; nullable decimal позволяет Average вернуть null для пустой выборки.
+            // здесь Where фильтрует активные товары; nullable decimal позволяет Average вернуть null для пустой выборки
             AverageActiveProductPrice = products
                 .Where(product => product.IsActive)
                 .Average(product => (decimal?)product.Price),
 
-            // Any проверяет существование хотя бы одного подходящего элемента.
+            // здесь Any проверяет существование хотя бы одного подходящего элемента
             HasOutOfStockProducts = products.Any(
                 product => product.StockQuantity == 0),
 
-            // All проверяет выполнение условия для каждого элемента (для пустой последовательности возвращает true).
+            // здесь All проверяет выполнение условия для каждого элемента (для пустой последовательности возвращает true)
             AllPricesNonNegative = products.All(
                 product => product.Price >= 0),
 
-            // FirstOrDefault возвращает первый подходящий товар или null.
+            // здесь FirstOrDefault возвращает первый подходящий товар или null
             ExpensiveProduct = products.FirstOrDefault(
                 product => product.Price > 100_000m),
 
-            // Single требует ровно одну категорию с ID 1; отсутствие или дубликаты вызовут исключение.
+            // здесь Single требует ровно одну категорию с ID 1; отсутствие или дубликаты вызовут исключение
             SelectedCategory = categories.Single(
                 category => category.Id == 1)
         };
     }
 
-    /// <summary>
-    /// Формирует страницу каталога активных товаров в наличии с фильтрами и данными справочников.
-    /// </summary>
-    /// <param name="products">Коллекция товаров.</param>
-    /// <param name="categories">Коллекция категорий.</param>
-    /// <param name="suppliers">Коллекция поставщиков.</param>
-    /// <param name="minPrice">Нижняя граница цены или null.</param>
-    /// <param name="maxPrice">Верхняя граница цены или null.</param>
-    /// <param name="categoryId">Идентификатор категории или null.</param>
-    /// <param name="searchText">Подстрока названия товара или null.</param>
-    /// <param name="pageNumber">Номер страницы начиная с 1.</param>
-    /// <param name="pageSize">Размер страницы.</param>
-    /// <returns>Отсортированный список строк выбранной страницы каталога.</returns>
+    // формирует страницу каталога активных товаров в наличии с фильтрами и данными справочников
+    // products — коллекция товаров
+    // categories — коллекция категорий
+    // suppliers — коллекция поставщиков
+    // minPrice — нижняя граница цены или null
+    // maxPrice — верхняя граница цены или null
+    // categoryId — идентификатор категории или null
+    // searchText — подстрока названия товара или null
+    // pageNumber — номер страницы начиная с 1
+    // pageSize — размер страницы
+    // возвращает: отсортированный список строк выбранной страницы каталога
     private List<ProductCatalogItem> BuildCatalog(
         IEnumerable<Product> products,
         IEnumerable<Category> categories,
@@ -610,28 +470,28 @@ public sealed class StoreAnalyticsService
     {
 
 
-        // AsQueryable позволяет постепенно формировать запрос без немедленного получения результата.
+        // здесь AsQueryable позволяет постепенно формировать запрос без немедленного получения результата
         IQueryable<Product> query = products.AsQueryable();
 
-        // В каталог включаем только активные товары.
+        // в каталог включаем только активные товары
         query = query.Where(product => product.IsActive);
 
-        // Добавляем нижнюю границу, если она указана.
+        // добавляем нижнюю границу, если она указана
         if (minPrice.HasValue)
             query = query.Where(
                 product => product.Price >= minPrice.Value);
 
-        // Добавляем верхнюю границу, если она указана.
+        // добавляем верхнюю границу, если она указана
         if (maxPrice.HasValue)
             query = query.Where(
                 product => product.Price <= maxPrice.Value);
 
-        // При заданной категории ограничиваем выборку её идентификатором.
+        // при заданной категории ограничиваем выборку её идентификатором
         if (categoryId.HasValue)
             query = query.Where(
                 product => product.CategoryId == categoryId.Value);
 
-        // Ищем подстроку названия без учёта регистра.
+        // ищем подстроку названия без учёта регистра
         if (!string.IsNullOrWhiteSpace(searchText))
         {
             query = query.Where(
@@ -640,40 +500,40 @@ public sealed class StoreAnalyticsService
                     StringComparison.OrdinalIgnoreCase));
         }
 
-        // Исключаем товары без положительного остатка.
+        // исключаем товары без положительного остатка
         query = query.Where(
             product => product.StockQuantity > 0);
 
-        // AsEnumerable переключает дальнейшие операции
-        // на LINQ to Objects без материализации запроса.
+        // метод AsEnumerable переключает дальнейшие операции
+        // на LINQ to Objects без материализации запроса
 
-        // Запрос в синтаксисе LINQ query syntax объединяет товары со справочниками.
+        // запрос в синтаксисе LINQ query syntax объединяет товары со справочниками
         var catalog =
             from product in query.AsEnumerable()
 
-            // Групповое соединение по идентификатору категории.
+            // групповое соединение по идентификатору категории
             join category in categories
                 on product.CategoryId equals category.Id
                 into categoryGroup
 
-            // DefaultIfEmpty превращает соединение в левое: товар остаётся, даже если категории нет.
+            // здесь DefaultIfEmpty превращает соединение в левое: товар остаётся, даже если категории нет
             from category in categoryGroup.DefaultIfEmpty()
 
-            // Соединяем с поставщиками; приводим ID к nullable int для совпадения типов ключей.
+            // соединяем с поставщиками; приводим ID к nullable int для совпадения типов ключей
             join supplier in suppliers
                 on product.SupplierId equals (int?)supplier.Id
                 into supplierGroup
 
-            // Левое соединение сохраняет товары без поставщика.
+            // левое соединение сохраняет товары без поставщика
             from supplier in supplierGroup.DefaultIfEmpty()
 
-            // Проекция select создаёт объект строки каталога из объединённых данных.
+            // проекция select создаёт объект строки каталога из объединённых данных
             select new ProductCatalogItem
             {
                 Id = product.Id,
                 Name = product.Name,
 
-                // Оператор ?? подставляет название при отсутствии связанной записи.
+                // оператор ?? подставляет название при отсутствии связанной записи
                 CategoryName = category?.Name
                     ?? "Неизвестная категория",
 
@@ -682,7 +542,7 @@ public sealed class StoreAnalyticsService
 
                 Price = product.Price,
 
-                // Добавляем 20% налога и округляем до двух знаков, середины — от нуля.
+                // добавляем 20% налога и округляем до двух знаков, середины — от нуля
                 PriceWithTax = decimal.Round(
                     product.Price * 1.2m,
                     2,
@@ -690,7 +550,7 @@ public sealed class StoreAnalyticsService
 
                 StockQuantity = product.StockQuantity,
 
-                // Вложенный тернарный оператор задаёт статус остатка. Нулевые остатки отсеяны фильтром выше.
+                // вложенный тернарный оператор задаёт статус остатка; нулевые остатки отсеяны фильтром выше
                 StockStatus = product.StockQuantity == 0
                     ? "Нет в наличии"
                     : product.StockQuantity <= 5
@@ -699,28 +559,26 @@ public sealed class StoreAnalyticsService
             };
 
 
-        // Сортируем по цене, затем названию и ID для стабильного порядка.
+        // сортируем по цене, затем названию и ID для стабильного порядка
         return catalog
             .OrderBy(item => item.Price)
             .ThenBy(item => item.Name)
             .ThenBy(item => item.Id)
-            // Skip пропускает предыдущие страницы, Take ограничивает размер, ToList выполняет запрос.
+            // здесь Skip пропускает предыдущие страницы, Take ограничивает размер, ToList выполняет запрос
             .Skip((pageNumber - 1) * pageSize)
             .Take(pageSize)
             .ToList();
     }
 
-    /// <summary>
-    /// Строит статистику запасов для каждой категории, включая категории без товаров.
-    /// </summary>
-    /// <param name="products">Коллекция товаров.</param>
-    /// <param name="categories">Коллекция категорий.</param>
-    /// <returns>Список отчётов, отсортированный по названию категории.</returns>
+    // строит статистику запасов для каждой категории, включая категории без товаров
+    // products — коллекция товаров
+    // categories — коллекция категорий
+    // возвращает: список отчётов, отсортированный по названию категории
     private List<CategoryStockReport> BuildCategoryReport(
         IEnumerable<Product> products,
         IEnumerable<Category> categories)
     {
-        // GroupJoin сохраняет каждую категорию, даже если соответствующих товаров нет.
+        // здесь GroupJoin сохраняет каждую категорию, даже если соответствующих товаров нет
         return categories
             .GroupJoin(
                 products,
@@ -731,26 +589,26 @@ public sealed class StoreAnalyticsService
                     {
                         CategoryName = category.Name,
 
-                        // Count рассчитывает общее число товаров.
+                        // здесь Count рассчитывает общее число товаров
                         TotalProducts = categoryProducts.Count(),
 
-                        // Отдельно считаем активные товары и товары в наличии.
+                        // отдельно считаем активные товары и товары в наличии
                         ActiveProducts = categoryProducts.Count(
                             product => product.IsActive),
 
                         InStockProducts = categoryProducts.Count(
                             product => product.StockQuantity > 0),
 
-                        // Суммируем физические остатки.
+                        // суммируем физические остатки
                         TotalStockQuantity = categoryProducts.Sum(
                             product => product.StockQuantity),
 
-                        // Стоимость запасов равна сумме произведений цены на остаток.
+                        // стоимость запасов равна сумме произведений цены на остаток
                         TotalStockValue = categoryProducts.Sum(
                             product => product.Price *
                                        product.StockQuantity),
 
-                        // Nullable decimal позволяет агрегатам вернуть null при отсутствии товаров.
+                        // здесь Nullable decimal позволяет агрегатам вернуть null при отсутствии товаров
                         AveragePrice = categoryProducts
                             .Select(product => (decimal?)product.Price)
                             .Average(),
@@ -763,24 +621,22 @@ public sealed class StoreAnalyticsService
                             .Select(product => (decimal?)product.Price)
                             .Max()
                     })
-            // Сортируем отчёт по названию и материализуем список.
+            // сортируем отчёт по названию и материализуем список
             .OrderBy(report => report.CategoryName)
             .ToList();
     }
 
-    /// <summary>
-    /// Рассчитывает продажи по товарам и выбирает пять лидеров по выручке.
-    /// </summary>
-    /// <param name="products">Справочник товаров.</param>
-    /// <param name="orders">Коллекция заказов с позициями.</param>
-    /// <returns>До пяти строк отчёта о продажах.</returns>
+    // рассчитывает продажи по товарам и выбирает пять лидеров по выручке
+    // products — справочник товаров
+    // orders — коллекция заказов с позициями
+    // возвращает: до пяти строк отчёта о продажах
     private List<ProductSalesReport> BuildSalesReport(
         IEnumerable<Product> products,
         IEnumerable<Order> orders)
     {
 
 
-        // SelectMany разворачивает вложенные списки позиций заказов в плоскую последовательность.
+        // здесь SelectMany разворачивает вложенные списки позиций заказов в плоскую последовательность
         var orderLines = orders.SelectMany(
             order => order.Items,
             (order, item) => new
@@ -790,12 +646,12 @@ public sealed class StoreAnalyticsService
                 ProductId = item.ProductId,
                 item.Quantity,
                 item.UnitPrice,
-                // Вычисляем выручку строки заказа по фактической цене продажи.
+                // вычисляем выручку строки заказа по фактической цене продажи
                 LineTotal = item.Quantity * item.UnitPrice
             });
 
 
-        // Join связывает строки заказов с товарами; позиции без соответствующего товара исключаются.
+        // здесь Join связывает строки заказов с товарами; позиции без соответствующего товара исключаются
         return orderLines
             .Join(
                 products,
@@ -811,78 +667,76 @@ public sealed class StoreAnalyticsService
                     line.UnitPrice,
                     line.LineTotal
                 })
-            // Группируем по ID и названию, чтобы одноимённые товары с разными ID не смешивались.
+            // группируем по ID и названию, чтобы одноимённые товары с разными ID не смешивались
             .GroupBy(item => new
             {
                 item.ProductId,
                 item.ProductName
             })
-            // Преобразуем каждую группу в строку отчёта о продажах.
+            // преобразуем каждую группу в строку отчёта о продажах
             .Select(group => new ProductSalesReport
             {
                 ProductId = group.Key.ProductId,
                 ProductName = group.Key.ProductName,
 
-                // Суммируем проданные единицы.
+                // суммируем проданные единицы
                 TotalQuantity = group.Sum(
                     item => item.Quantity),
 
 
-                // Distinct удаляет повторяющиеся ID заказов перед подсчётом.
+                // здесь Distinct удаляет повторяющиеся ID заказов перед подсчётом
                 OrdersCount = group
                     .Select(item => item.OrderId)
                     .Distinct()
                     .Count(),
 
-                // Суммируем выручку всех позиций данного товара.
+                // суммируем выручку всех позиций данного товара
                 Revenue = group.Sum(item => item.LineTotal)
             })
-            // Сортируем по убыванию выручки и количества; при равенстве — по названию и ID.
+            // сортируем по убыванию выручки и количества; при равенстве — по названию и ID
             .OrderByDescending(item => item.Revenue)
             .ThenByDescending(item => item.TotalQuantity)
             .ThenBy(item => item.ProductName)
             .ThenBy(item => item.ProductId)
-            // Выбираем пять лидеров и выполняем запрос.
+            // выбираем пять лидеров и выполняем запрос
             .Take(5)
             .ToList();
     }
 
-    /// <summary>
-    /// Выводит группы товаров по категории и ценовым интервалам шириной 500 рублей.
-    /// </summary>
-    /// <param name="products">Коллекция товаров для группировки.</param>
-    /// <param name="categories">Справочник названий категорий.</param>
+    // выводит группы товаров по категории и ценовым интервалам шириной 500 рублей
+    // products — коллекция товаров для группировки
+    // categories — справочник названий категорий
     public void PrintPriceGroups(
         IEnumerable<Product> products,
         IEnumerable<Category> categories)
     {
-        // Группируем по составному ключу: категория и нижняя граница интервала.
+        // группируем по составному ключу: категория и нижняя граница интервала
         var groups = products
             .GroupBy(product => new
             {
                 product.CategoryId,
 
-                // Floor округляет цену вниз до ближайшего кратного 500.
+                // здесь Floor округляет цену вниз до ближайшего кратного 500
                 LowerBound = decimal.Floor(
                     product.Price / 500m) * 500m
             })
-            // Сортируем группы по категории и нижней границе цены.
+            // сортируем группы по категории и нижней границе цены
             .OrderBy(group => group.Key.CategoryId)
             .ThenBy(group => group.Key.LowerBound);
 
         Console.WriteLine(
             "\n=== ГРУППИРОВКА ПО КАТЕГОРИИ И ЦЕНЕ ===");
 
-        // Перебираем полученные группы.
+        // перебираем полученные группы
         foreach (var group in groups)
         {
-            // Ищем название категории; если она отсутствует, используем текст по умолчанию.
+            // ищем название категории; если она отсутствует, используем текст по умолчанию
             string categoryName = categories
                 .FirstOrDefault(
                     category => category.Id == group.Key.CategoryId)
                 ?.Name ?? "Неизвестная категория";
 
-            // Верхняя граница интервала не включается в него.
+            // верхняя граница интервала не включается в него
             decimal upperBound = group.Key.LowerBound + 500m;
 
             Console.WriteLine(
@@ -893,22 +747,18 @@ public sealed class StoreAnalyticsService
     }
 }
 
-/// <summary>
-/// Консольная демонстрация построения отчётов и отложенного выполнения LINQ.
-/// </summary>
+// консольная демонстрация построения отчётов и отложенного выполнения LINQ
 public static class Program
 {
-    /// <summary>
-    /// Точка входа: создаёт данные, формирует и печатает отчёт, демонстрирует группировку и отложенные запросы.
-    /// </summary>
+    // метод Main: создаёт данные, формирует и печатает отчёт, демонстрирует группировку и отложенные запросы
     public static void Main()
     {
-        // Создаём демонстрационные данные.
+        // создаём демонстрационные данные
         StoreData data = TestDataFactory.Create();
 
         StoreAnalyticsService service = new();
 
-        // Строим отчёт без дополнительных фильтров, первая страница содержит до 10 строк.
+        // строим отчёт без дополнительных фильтров, первая страница содержит до 10 строк
         StoreAnalyticsReport report = service.BuildReport(
             data.Products,
             data.Categories,
@@ -921,26 +771,24 @@ public static class Program
             pageNumber: 1,
             pageSize: 10);
 
-        // Выводим сводный отчёт.
+        // выводим сводный отчёт
         PrintReport(report);
 
-        // Дополнительно печатаем группировку по ценовым интервалам.
+        // дополнительно печатаем группировку по ценовым интервалам
         service.PrintPriceGroups(
             data.Products, data.Categories);
 
-        // Показываем поведение отложенного запроса после изменения исходного списка.
+        // показываем поведение отложенного запроса после изменения исходного списка
         DemonstrateDeferredExecution(data.Products);
     }
 
-    /// <summary>
-    /// Печатает разделы аналитического отчёта в консоль.
-    /// </summary>
-    /// <param name="report">Готовый сводный отчёт магазина.</param>
+    // печатает разделы аналитического отчёта в консоль
+    // report — готовый сводный отчёт магазина
     private static void PrintReport(StoreAnalyticsReport report)
     {
         Console.WriteLine("=== КАТАЛОГ ТОВАРОВ ===");
 
-        // Выводим каждую строку каталога.
+        // выводим каждую строку каталога
         foreach (var item in report.Catalog)
         {
             Console.WriteLine($"ID: {item.Id} | {item.Name}");
@@ -954,7 +802,7 @@ public static class Program
 
         Console.WriteLine("\n=== ОТЧЁТ ПО КАТЕГОРИЯМ ===");
 
-        // Выводим агрегаты по каждой категории.
+        // выводим агрегаты по каждой категории
         foreach (var item in report.CategoryReports)
         {
             Console.WriteLine($"\n{item.CategoryName}");
@@ -970,7 +818,7 @@ public static class Program
 
         Console.WriteLine("\n=== ТОП-5 ПРОДАЖ ===");
 
-        // Выводим рейтинг продаж.
+        // выводим рейтинг продаж
         foreach (var item in report.TopSales)
         {
             Console.WriteLine(
@@ -980,7 +828,7 @@ public static class Program
                 $"Выручка: {item.Revenue:F2} руб.");
         }
 
-        // Печатаем показатели по всем товарам.
+        // печатаем показатели по всем товарам
         Console.WriteLine("\n=== ОБЩИЕ ПОКАЗАТЕЛИ ===");
 
         Console.WriteLine($"Всего товаров: {report.TotalProducts}");
@@ -992,7 +840,7 @@ public static class Program
             $"Средняя цена активных товаров: " +
             $"{FormatPrice(report.AverageActiveProductPrice)}");
 
-        // Демонстрируем результаты операторов Any, All, FirstOrDefault и Single.
+        // демонстрируем результаты операторов Any, All, FirstOrDefault и Single
         Console.WriteLine("\n=== ПРОВЕРКИ LINQ ===");
 
         Console.WriteLine(
@@ -1012,41 +860,37 @@ public static class Program
             $"{report.SelectedCategory?.Name}");
     }
 
-    /// <summary>
-    /// Форматирует необязательную цену для вывода.
-    /// </summary>
-    /// <param name="price">Цена или null при отсутствии данных.</param>
-    /// <returns>Цена с двумя десятичными знаками либо строка об отсутствии данных.</returns>
+    // форматирует необязательную цену для вывода
+    // price — цена или null при отсутствии данных
+    // возвращает: цена с двумя десятичными знаками либо строка об отсутствии данных
     private static string FormatPrice(decimal? price)
     {
-        // Для null используем текст «Нет данных», иначе форматируем цену.
+        // для null используем текст «Нет данных», иначе форматируем цену
         return price.HasValue
             ? $"{price.Value:F2} руб."
             : "Нет данных";
     }
 
-    /// <summary>
-    /// Показывает отличие отложенного запроса Where от списка, материализованного через ToList.
-    /// </summary>
-    /// <param name="products">Изменяемый список товаров, в который добавляется демонстрационный товар.</param>
+    // показывает отличие отложенного запроса Where от списка, материализованного через ToList
+    // products — изменяемый список товаров, в который добавляется демонстрационный товар
     private static void DemonstrateDeferredExecution(
         List<Product> products)
     {
         Console.WriteLine("\n=== ОТЛОЖЕННОЕ ВЫПОЛНЕНИЕ ===");
 
-        // Where создаёт отложенный запрос, который будет выполнен при перечислении.
+        // здесь Where создаёт отложенный запрос, который будет выполнен при перечислении
         var deferredQuery = products
             .Where(product => product.IsActive);
 
 
-        // ToList выполняет запрос сейчас и сохраняет состав результата в отдельном списке.
+        // здесь ToList выполняет запрос сейчас и сохраняет состав результата в отдельном списке
         var snapshot = deferredQuery.ToList();
 
-        // Первый Count выполняет отложенный запрос до изменения данных.
+        // первый Count выполняет отложенный запрос до изменения данных
         Console.WriteLine(
             $"До добавления товара: {deferredQuery.Count()}");
 
-        // Добавляем активный товар в исходную коллекцию.
+        // добавляем активный товар в исходную коллекцию
         products.Add(new Product
         {
             Id = 9,
@@ -1058,11 +902,11 @@ public static class Program
             IsActive = true
         });
 
-        // Повторное выполнение запроса учитывает новый товар.
+        // повторное выполнение запроса учитывает новый товар
         Console.WriteLine(
             $"Отложенный запрос: {deferredQuery.Count()}");
 
-        // Ранее созданный список сохраняет прежний состав элементов.
+        // ранее созданный список сохраняет прежний состав элементов
         Console.WriteLine(
             $"Материализованный снимок: {snapshot.Count}");
     }

@@ -2,17 +2,13 @@
 using System;
 using System.Collections.Generic;
 
-/// <summary>
-/// Модель одной товарной позиции заказа.
-/// </summary>
+// класс для хранения данных одной товарной позиции заказа
 public sealed class OrderItem
 {
-    /// <summary>
-    /// Создаёт позицию с названием, ценой и количеством.
-    /// </summary>
-    /// <param name="name">Название товара.</param>
-    /// <param name="price">Цена за единицу.</param>
-    /// <param name="quantity">Количество единиц товара.</param>
+    // создаёт позицию с названием, ценой и количеством
+    // name — название товара
+    // price — цена за единицу
+    // quantity — количество единиц товара
     public OrderItem(string name, decimal price, int quantity)
     {
         Name = name;
@@ -20,32 +16,22 @@ public sealed class OrderItem
         Quantity = quantity;
     }
 
-    /// <summary>
-    /// Название товара.
-    /// </summary>
+    // название товара
     public string Name { get; }
-    /// <summary>
-    /// Цена одной единицы товара.
-    /// </summary>
+    // цена одной единицы товара
     public decimal Price { get; }
-    /// <summary>
-    /// Количество единиц товара.
-    /// </summary>
+    // количество единиц товара
     public int Quantity { get; }
 }
 
-/// <summary>
-/// Данные события о завершении обработки заказа.
-/// </summary>
+// данные события о завершении обработки заказа
 public sealed class OrderProcessedEventArgs : EventArgs
 {
-    /// <summary>
-    /// Формирует сведения о завершённой обработке.
-    /// </summary>
-    /// <param name="orderId">Номер заказа.</param>
-    /// <param name="total">Итоговая стоимость.</param>
-    /// <param name="processedItemsCount">Количество обработанных позиций.</param>
-    /// <param name="processedAt">Дата и время обработки.</param>
+    // формирует сведения о завершённой обработке
+    // orderId — номер заказа
+    // total — итоговая стоимость
+    // processedItemsCount — количество обработанных позиций
+    // processedAt — дата и время обработки
     public OrderProcessedEventArgs(
         int orderId,
         decimal total,
@@ -58,54 +44,38 @@ public sealed class OrderProcessedEventArgs : EventArgs
         ProcessedAt = processedAt;
     }
 
-    /// <summary>
-    /// Идентификатор заказа.
-    /// </summary>
+    // идентификатор заказа
     public int OrderId { get; }
-    /// <summary>
-    /// Итоговая сумма заказа.
-    /// </summary>
+    // итоговая сумма заказа
     public decimal Total { get; }
-    /// <summary>
-    /// Количество включённых в расчёт позиций, а не отдельных единиц товара.
-    /// </summary>
+    // количество включённых в расчёт позиций, а не отдельных единиц товара
     public int ProcessedItemsCount { get; }
-    /// <summary>
-    /// Момент завершения обработки.
-    /// </summary>
+    // момент завершения обработки
     public DateTimeOffset ProcessedAt { get; }
 }
 
-/// <summary>
-/// Делегат для расчёта стоимости одной позиции по преобразованной цене.
-/// </summary>
-/// <param name="item">Позиция заказа.</param>
-/// <param name="transformedUnitPrice">Цена единицы после преобразования.</param>
-/// <returns>Стоимость позиции.</returns>
+// делегат для расчёта стоимости одной позиции по преобразованной цене
+// item — позиция заказа
+// transformedUnitPrice — цена единицы после преобразования
+// возвращает: стоимость позиции
 public delegate decimal ItemTotalCalculator(
     OrderItem item,
     decimal transformedUnitPrice);
 
-/// <summary>
-/// Обрабатывает заказ с помощью переданных делегатов и уведомляет подписчиков о результате.
-/// </summary>
+// обрабатывает заказ с помощью переданных делегатов и уведомляет подписчиков о результате
 public sealed class OrderProcessor
 {
-    /// <summary>
-    /// Событие, вызываемое после завершения расчёта заказа.
-    /// </summary>
+    // событие, вызываемое после завершения расчёта заказа
     public event EventHandler<OrderProcessedEventArgs>? OrderProcessed;
 
-    /// <summary>
-    /// Проверяет позиции, фильтрует их, преобразует цены, рассчитывает итог и вызывает событие.
-    /// </summary>
-    /// <param name="orderId">Положительный номер заказа.</param>
-    /// <param name="items">Коллекция товарных позиций.</param>
-    /// <param name="shouldProcess">Предикат включения позиции в расчёт.</param>
-    /// <param name="transformPrice">Функция преобразования цены единицы.</param>
-    /// <param name="calculateItemTotal">Делегат расчёта стоимости позиции.</param>
-    /// <param name="log">Необязательный делегат журналирования.</param>
-    /// <returns>Итоговая стоимость всех включённых позиций.</returns>
+    // проверяет позиции, фильтрует их, преобразует цены, рассчитывает итог и вызывает событие
+    // orderId — положительный номер заказа
+    // items — коллекция товарных позиций
+    // shouldProcess — предикат включения позиции в расчёт
+    // transformPrice — функция преобразования цены единицы
+    // calculateItemTotal — делегат расчёта стоимости позиции
+    // log — необязательный делегат журналирования
+    // возвращает: итоговая стоимость всех включённых позиций
     public decimal Process(
         int orderId,
         IEnumerable<OrderItem> items,
@@ -114,7 +84,7 @@ public sealed class OrderProcessor
         ItemTotalCalculator calculateItemTotal,
         Action<string>? log = null)
     {
-        // Проверяем обязательные коллекцию и делегаты на null.
+        // проверяем обязательные коллекцию и делегаты на null
         if (items == null)
             throw new ArgumentNullException(nameof(items));
 
@@ -127,54 +97,54 @@ public sealed class OrderProcessor
         if (calculateItemTotal == null)
             throw new ArgumentNullException(nameof(calculateItemTotal));
 
-        // Номер заказа должен быть положительным.
+        // номер заказа должен быть положительным
         if (orderId <= 0)
             throw new ArgumentOutOfRangeException(nameof(orderId));
 
-        // Накопитель итоговой суммы и счётчик обработанных позиций.
+        // накопитель итоговой суммы и счётчик обработанных позиций
         decimal total = 0;
         int processedItemsCount = 0;
 
-        // Оператор ?.Invoke вызывает журналирование только при наличии делегата.
+        // оператор ?.Invoke вызывает журналирование только при наличии делегата
         log?.Invoke($"Начало обработки заказа №{orderId}");
 
-        // Последовательно обрабатываем все позиции заказа.
+        // последовательно обрабатываем все позиции заказа
         foreach (OrderItem item in items)
         {
-            // Проверяем, что позиция существует.
+            // проверяем, что позиция существует
             if (item == null)
                 throw new ArgumentException("Позиция заказа не может быть null.");
 
-            // Отрицательная цена недопустима.
+            // отрицательная цена недопустима
             if (item.Price < 0)
                 throw new ArgumentOutOfRangeException(
                     nameof(item.Price),
                     "Цена не может быть отрицательной.");
 
-            // Количество должно быть строго положительным.
+            // количество должно быть строго положительным
             if (item.Quantity <= 0)
                 throw new ArgumentOutOfRangeException(
                     nameof(item.Quantity),
                     "Количество должно быть положительным.");
 
-            // Predicate определяет, следует ли учитывать позицию; continue пропускает исключённую позицию.
+            // делегат Predicate определяет, следует ли учитывать позицию; continue пропускает исключённую позицию
             if (!shouldProcess(item))
             {
                 log?.Invoke($"Товар {item.Name} исключён из расчёта.");
                 continue;
             }
 
-            // Func преобразует исходную цену единицы товара.
+            // делегат Func преобразует исходную цену единицы товара
             decimal transformedPrice = transformPrice(item.Price);
 
             log?.Invoke(
                 $"{item.Name}: цена {item.Price:F2} -> {transformedPrice:F2} руб.");
 
-            // Передаём позицию и преобразованную цену пользовательскому делегату.
+            // передаём позицию и преобразованную цену пользовательскому делегату
             decimal itemTotal = calculateItemTotal(
                 item, transformedPrice);
 
-            // Прибавляем стоимость позиции и увеличиваем счётчик.
+            // прибавляем стоимость позиции и увеличиваем счётчик
             total += itemTotal;
             processedItemsCount++;
 
@@ -182,46 +152,44 @@ public sealed class OrderProcessor
                 $"{item.Name}: стоимость позиции {itemTotal:F2} руб.");
         }
 
-        // Записываем итог обработки в журнал.
+        // записываем итог обработки в журнал
         log?.Invoke(
             $"Заказ №{orderId} обработан. Итог: {total:F2} руб.");
 
-        // Создаём объект данных события с текущим временем.
+        // создаём объект данных события с текущим временем
         OrderProcessedEventArgs args = new OrderProcessedEventArgs(
             orderId,
             total,
             processedItemsCount,
             DateTimeOffset.Now);
 
-        // Оповещаем подписчиков о завершении обработки.
+        // оповещаем подписчиков о завершении обработки
         OnOrderProcessed(args);
 
         return total;
     }
 
-    /// <summary>
-    /// Вызывает каждого подписчика события отдельно, чтобы ошибка одного не мешала остальным.
-    /// </summary>
-    /// <param name="e">Данные обработанного заказа.</param>
+    // вызывает каждого подписчика события отдельно, чтобы ошибка одного не мешала остальным
+    // e — данные обработанного заказа
     private void OnOrderProcessed(OrderProcessedEventArgs e)
     {
-        // Сохраняем список подписчиков в локальную переменную.
+        // сохраняем список подписчиков в локальную переменную
         EventHandler<OrderProcessedEventArgs>? handlers = OrderProcessed;
 
-        // Если подписчиков нет, завершать вызов нечего.
+        // если подписчиков нет, завершать вызов нечего
         if (handlers == null)
             return;
 
-        // GetInvocationList возвращает отдельные обработчики многоадресного делегата.
+        // метод GetInvocationList возвращает отдельные обработчики многоадресного делегата
         foreach (EventHandler<OrderProcessedEventArgs> handler
                  in handlers.GetInvocationList())
         {
-            // Изолируем выполнение каждого обработчика.
+            // изолируем выполнение каждого обработчика
             try
             {
                 handler(this, e);
             }
-            // Регистрируем ошибку и продолжаем вызов оставшихся подписчиков.
+            // регистрируем ошибку и продолжаем вызов оставшихся подписчиков
             catch (Exception ex)
             {
                 Console.WriteLine(
@@ -231,17 +199,13 @@ public sealed class OrderProcessor
     }
 }
 
-/// <summary>
-/// Демонстрирует делегаты, лямбда-выражения и события на примере заказа.
-/// </summary>
+// демонстрирует делегаты, лямбда-выражения и события на примере заказа
 class Program
 {
-    /// <summary>
-    /// Точка входа: настраивает правила обработки заказа, подписчиков и журналирование.
-    /// </summary>
+    // метод Main: настраивает правила обработки заказа, подписчиков и журналирование
     static void Main()
     {
-        // Тестовые позиции с разными ценами и количеством.
+        // тестовые позиции с разными ценами и количеством
         OrderItem[] items =
         {
             new OrderItem("Ноутбук", 50000m, 1),
@@ -252,41 +216,41 @@ class Program
 
         OrderProcessor processor = new OrderProcessor();
 
-        // Скидка 10% и минимальная цена позиции для включения в расчёт.
+        // скидка 10% и минимальная цена позиции для включения в расчёт
         decimal discount = 0.10m;
         decimal minPrice = 500m;
 
-        // Предикат захватывает minPrice из окружающей области видимости.
+        // предикат захватывает minPrice из окружающей области видимости
         Predicate<OrderItem> shouldProcess =
             item => item.Price >= minPrice;
 
-        // Лямбда применяет скидку к цене единицы.
+        // лямбда применяет скидку к цене единицы
         Func<decimal, decimal> applyDiscount =
             price => price * (1 - discount);
 
-        // Статическая лямбда округляет цену и не захватывает внешние переменные.
+        // статическая лямбда округляет цену и не захватывает внешние переменные
         Func<decimal, decimal> roundPrice =
             static price => Math.Round(price, 2);
 
-        // Композиция функций: сначала скидка, затем округление.
+        // композиция функций: сначала скидка, затем округление
         Func<decimal, decimal> transformPrice =
             price => roundPrice(applyDiscount(price));
 
-        // Рассчитываем стоимость позиции с учётом количества.
+        // рассчитываем стоимость позиции с учётом количества
         ItemTotalCalculator calculateItemTotal =
             static (item, price) => price * item.Quantity;
 
-        // Список для сохранения сообщений журнала.
+        // список для сохранения сообщений журнала
         List<string> journal = new List<string>();
 
-        // Первый обработчик Action выводит сообщение в консоль.
+        // первый обработчик Action выводит сообщение в консоль
         Action<string> log =
             static message => Console.WriteLine($"[Журнал] {message}");
 
-        // Добавляем второй обработчик: он сохраняет сообщение в список.
+        // добавляем второй обработчик: он сохраняет сообщение в список
         log += message => journal.Add(message);
 
-        // Подписчик имитирует уведомление покупателя.
+        // подписчик имитирует уведомление покупателя
         EventHandler<OrderProcessedEventArgs> customerNotification =
             static (sender, e) =>
             {
@@ -294,7 +258,7 @@ class Program
                     $"Покупатель уведомлён о заказе №{e.OrderId}.");
             };
 
-        // Подписчик намеренно выбрасывает исключение для проверки изоляции ошибок.
+        // подписчик намеренно выбрасывает исключение для проверки изоляции ошибок
         EventHandler<OrderProcessedEventArgs> errorHandler =
             static (sender, e) =>
             {
@@ -302,7 +266,7 @@ class Program
                     "Не удалось отправить уведомление.");
             };
 
-        // Подписчик выводит статистику обработанного заказа.
+        // подписчик выводит статистику обработанного заказа
         EventHandler<OrderProcessedEventArgs> statisticsHandler =
             static (sender, e) =>
             {
@@ -316,14 +280,14 @@ class Program
                     $"Дата обработки: {e.ProcessedAt}");
             };
 
-        // Подписываем три обработчика на событие.
+        // подписываем три обработчика на событие
         processor.OrderProcessed += customerNotification;
         processor.OrderProcessed += errorHandler;
         processor.OrderProcessed += statisticsHandler;
 
         try
         {
-            // Обрабатываем заказ со всеми настроенными делегатами.
+            // обрабатываем заказ со всеми настроенными делегатами
             decimal total = processor.Process(
                 1,
                 items,
@@ -334,14 +298,14 @@ class Program
 
             Console.WriteLine($"К оплате: {total:F2} руб.");
 
-            // Удаляем два обработчика, оставляя только статистику.
+            // удаляем два обработчика, оставляя только статистику
             processor.OrderProcessed -= errorHandler;
             processor.OrderProcessed -= customerNotification;
 
             Console.WriteLine(
                 "\nПовторная обработка после отписки:");
 
-            // Повторяем расчёт после отписки от события.
+            // повторяем расчёт после отписки от события
             processor.Process(
                 2,
                 items,
@@ -350,17 +314,17 @@ class Program
                 calculateItemTotal,
                 log);
 
-            // Выводим количество сообщений, накопленных за оба вызова.
+            // выводим количество сообщений, накопленных за оба вызова
             Console.WriteLine(
                 $"\nКоличество записей в журнале: {journal.Count}");
         }
-        // Обрабатываем исключения самого процесса расчёта.
+        // обрабатываем исключения самого процесса расчёта
         catch (Exception ex)
         {
             Console.WriteLine($"Ошибка обработки заказа: {ex.Message}");
         }
 
-        // Отписываем последний обработчик события.
+        // отписываем последний обработчик события
         processor.OrderProcessed -= statisticsHandler;
     }
 }
